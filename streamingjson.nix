@@ -1,9 +1,10 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, pythonOlder
-, setuptools
-, wheel
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  pythonOlder,
+  setuptools,
+  wheel,
 }:
 
 buildPythonPackage rec {
@@ -26,12 +27,9 @@ buildPythonPackage rec {
   # No dependencies listed in PyPI
   dependencies = [ ];
 
-  # Skip checks since no tests available
-  doCheck = false;
-  
-  # Skip Python imports check 
+  # Skip Python imports check
   pythonImportsCheck = [ ];
-  
+
   # Skip runtime dependency checking
   dontCheckRuntimeDeps = true;
 
@@ -42,3 +40,4 @@ buildPythonPackage rec {
     maintainers = [ ];
   };
 }
+

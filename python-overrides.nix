@@ -1,11 +1,7 @@
-# Override Python packages to match exact kimi-cli requirements
-# Following nixpkgs Python best practices from:
-# https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.section.md
 { pkgs }:
 
 pkgs.python313.override {
   packageOverrides = pythonself: pythonsuper: {
-    # aiofiles 25.1.0 - required by kimi-cli
     aiofiles = pythonsuper.aiofiles.overridePythonAttrs (oldAttrs: rec {
       version = "25.1.0";
       src = pkgs.fetchPypi {
@@ -17,7 +13,6 @@ pkgs.python313.override {
       doCheck = false;
     });
 
-    # aiohttp 3.13.2 - required by kimi-cli
     aiohttp = pythonsuper.aiohttp.overridePythonAttrs (oldAttrs: rec {
       version = "3.13.2";
       src = pkgs.fetchPypi {
@@ -28,7 +23,6 @@ pkgs.python313.override {
       doCheck = false;
     });
 
-    # click 8.3.0 - required by kimi-cli
     click = pythonsuper.click.overridePythonAttrs (oldAttrs: rec {
       version = "8.3.0";
       src = pkgs.fetchPypi {
@@ -38,7 +32,6 @@ pkgs.python313.override {
       };
     });
 
-    # patch-ng 1.19.0 - required by kimi-cli
     patch-ng = pythonsuper.patch-ng.overridePythonAttrs (oldAttrs: rec {
       version = "1.19.0";
       src = pkgs.fetchPypi {
@@ -48,7 +41,6 @@ pkgs.python313.override {
       };
     });
 
-    # pillow 12.0.0 - required by kimi-cli
     pillow = pythonsuper.pillow.overridePythonAttrs (oldAttrs: rec {
       version = "12.0.0";
       src = pkgs.fetchPypi {
@@ -60,7 +52,6 @@ pkgs.python313.override {
       doCheck = false;
     });
 
-    # rich 14.2.0 - required by kimi-cli
     rich = pythonsuper.rich.overridePythonAttrs (oldAttrs: rec {
       version = "14.2.0";
       src = pkgs.fetchPypi {
@@ -70,6 +61,39 @@ pkgs.python313.override {
       };
       doCheck = false;
     });
+
+    openai = pythonsuper.openai.overridePythonAttrs (oldAttrs: rec {
+      version = "2.6.1";
+      src = pkgs.fetchPypi {
+        pname = "openai";
+        inherit version;
+        hash = "sha256-J65wTRkGFfygwPwreWo4+LWHlkWjpSycRTsj+XFBu0k=";
+      };
+      doCheck = false;
+      dontCheckRuntimeDeps = true;
+    });
+
+    typer = pythonsuper.typer.overridePythonAttrs (oldAttrs: rec {
+      version = "0.20.0";
+      src = pkgs.fetchPypi {
+        pname = "typer";
+        inherit version;
+        hash = "sha256-Gq9klAMXk+SHb7C6z6apErVRz0PB5jyADfixqGZyDDc=";
+      };
+      doCheck = false;
+    });
+
+    mcp = pythonsuper.mcp.overridePythonAttrs (oldAttrs: {
+      postPatch = (oldAttrs.postPatch or "") + ''
+        sed -i 's/"uv-dynamic-versioning"/"hatchling"/g' pyproject.toml || true
+        sed -i 's/dynamic = \["version"\]/dynamic = []/g' pyproject.toml || true
+        sed -i '/dynamic = \[\]/d' pyproject.toml || true
+        if ! grep -q '^version = ' pyproject.toml; then
+          sed -i '/\[project\]/a version = "${oldAttrs.version}"' pyproject.toml || true
+        fi
+        sed -i '/\[tool.hatch.version\]/,/^$/d' pyproject.toml || true
+      '';
+      doCheck = false;
+    });
   };
 }
-

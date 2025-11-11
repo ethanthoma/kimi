@@ -1,0 +1,15 @@
+*
+
+!.gitignore
+
+!flake.lock
+!flake.nix
+
+!agent-client-protocol.nix
+!fastmcp.nix
+!kimi-cli.nix
+!kosong.nix
+!python-overrides.nix
+!ripgrepy.nix
+!streamingjson.nix
+!uv-dynamic-versioning.nix

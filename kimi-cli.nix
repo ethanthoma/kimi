@@ -34,7 +34,7 @@ buildPythonApplication {
     owner = "MoonshotAI";
     repo = "kimi-cli";
     rev = "main";
-    hash = "sha256-HlMxBI/6bldYLEAbcazGplL1q1oUv10dBH6EN8yRP6k=";
+    hash = "sha256-F8EHBmqgoC2Syqd21bTqRYo8wT50oJKfoiFLCZbXIGE=";
   };
 
   postPatch = ''

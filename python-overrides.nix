@@ -95,5 +95,16 @@ pkgs.python313.override {
       '';
       doCheck = false;
     });
+
+    aiofile = pythonsuper.aiofile.overridePythonAttrs (oldAttrs: rec {
+      version = "3.9.0";
+      src = pkgs.fetchPypi {
+        pname = "aiofile";
+        inherit version;
+        hash = "sha256-5a1xi7FIsmW23xs3UsTR2DAkuT2pvVmd90udn/z3kZs=";
+      };
+      build-system = [ pythonself.poetry-core ];
+      doCheck = false;
+    });
   };
 }

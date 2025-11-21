@@ -7,6 +7,7 @@
   agent-client-protocol,
   aiofiles,
   aiohttp,
+  aiopath,
   typer,
   kosong,
   loguru,
@@ -64,6 +65,7 @@ EOF
     agent-client-protocol
     aiofiles
     aiohttp
+    aiopath
     typer
     kosong
     loguru

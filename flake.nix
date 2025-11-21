@@ -107,6 +107,18 @@
                 doCheck = false;
               });
 
+              aiofile = pythonsuper.aiofile.overridePythonAttrs (oldAttrs: rec {
+                version = "3.9.0";
+                src = final.fetchPypi {
+                  pname = "aiofile";
+                  inherit version;
+                  hash = "sha256-5a1xi7FIsmW23xs3UsTR2DAkuT2pvVmd90udn/z3kZs=";
+                };
+                build-system = [ pythonself.poetry-core ];
+                doCheck = false;
+              });
+
+              aiopath = pythonself.callPackage ./aiopath.nix { };
               kosong = pythonself.callPackage ./kosong.nix { };
               streamingjson = pythonself.callPackage ./streamingjson.nix { };
               ripgrepy = pythonself.callPackage ./ripgrepy.nix { };
@@ -121,6 +133,7 @@
         {
           kimi-cli = python3.pkgs.callPackage ./kimi-cli.nix {
             inherit (python3.pkgs)
+              aiopath
               kosong
               streamingjson
               ripgrepy
@@ -140,6 +153,7 @@
 
         python3Exact = import ./python-overrides.nix { inherit pkgs; };
 
+        aiopath = python3Exact.pkgs.callPackage ./aiopath.nix { };
         kosong = python3Exact.pkgs.callPackage ./kosong.nix { };
         streamingjson = python3Exact.pkgs.callPackage ./streamingjson.nix { };
         ripgrepy = python3Exact.pkgs.callPackage ./ripgrepy.nix { };
@@ -149,6 +163,7 @@
 
         kimi-cli = python3Exact.pkgs.callPackage ./kimi-cli.nix {
           inherit
+            aiopath
             kosong
             streamingjson
             ripgrepy
@@ -164,6 +179,7 @@
           default = kimi-cli;
 
           inherit
+            aiopath
             kosong
             streamingjson
             ripgrepy
